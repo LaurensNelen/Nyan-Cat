@@ -12,6 +12,7 @@
 <body>
     <button type="button" id="button" onclick="onlick()">Click me</button>
     <canvas id="canvas"></canvas>
+
     <script>
         var button = document.getElementById("button");
         var c = document.getElementById("canvas");
@@ -24,7 +25,7 @@
         var img = new Image;
         var x = 0;
         var y = 0;
-        var speed = 5;
+
 
         function getRandomInt(max) {
             return Math.floor(Math.random() * Math.floor(max));
@@ -45,9 +46,10 @@
                 ctx.drawImage(img, this.x, this.y, 150, 125);
 
             }
-            this.fall = function() {
-                this.y += speed;
-                this.x += speed;
+            this.fall = function(speed) {
+                this.speed = speed;
+                this.y += this.speed;
+                this.x += this.speed;
 
                 if (this.y > canvas.height || this.x > canvas.width) {
                     this.y = 0;
@@ -60,13 +62,18 @@
         }
 
         function draw() {
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            var background = new Image();
+            background.src = "Assets/img/background.jpg";
+
+            background.onload = function() {
+                ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+            }
             for (let i = 0; i < NumberOfNyanCats; i++) {
 
 
                 NyanCats[i].show();
-
-                NyanCats[i].fall();
+                speed = getRandomInt(5);
+                NyanCats[i].fall(speed);
 
 
             }
@@ -86,13 +93,20 @@
         function clearrect() {
             button.style.display = 'block';
             canvas.style.display = 'none';
+
         }
 
         function onlick() {
+
+            var audio = new Audio("https://ia800501.us.archive.org/33/items/nyannyannyan/NyanCatoriginal.mp3");
+            audio.play();
             setTimeout(clearrect, 10000);
+
             update();
+
             button.style.display = 'none';
             canvas.style.display = 'block';
+
 
         }
     </script>
